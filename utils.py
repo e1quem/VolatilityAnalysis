@@ -63,7 +63,7 @@ def marketType(markets):
         typeName = "Politics"
     elif type == 2:
         markets = Sports
-        type = "Sports"
+        typeName = "Sports"
     else:
         markets = Politics + Sports
         typeName = "Sports & Politics"

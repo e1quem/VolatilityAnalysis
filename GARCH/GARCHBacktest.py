@@ -45,16 +45,12 @@ if interval > days:
     interval = float(userInterval)
 if interval < 1:
     aggregate = '10min' # Already in 10 minutes intervals
-    dist = 'normal' # To fit the model more easily on shorter period of time
 elif 1 <= interval < 3:
     aggregate = '20min'
-    dist = 'normal'
 elif 3 <= interval < 7:
     aggregate = '1H'
-    dist = 'normal'
 else:
     aggregate = '4H'
-    dist = 't' # To take into account extreme price changes of prediction markets on extended periods of time
 
 pointsFull = int(interval * 144)
 dfFull = dfFull.tail(pointsFull)
@@ -85,7 +81,7 @@ specs = {
 bicResults = {}
 
 for name, (p, o, q) in specs.items():
-    modelSTD = arch_model(ScaledReturns, p=p, o=o, q=q, dist=dist)
+    modelSTD = arch_model(ScaledReturns, p=p, o=o, q=q, dist='ged')
     fitSTD = modelSTD.fit(update_freq=0, disp='off', show_warning=False) # We avoid wordy display of results with disp='off'.
     bicResults[name] = fitSTD.bic
 
@@ -138,7 +134,7 @@ else:
         # Fitting the models
         for name, (pb, ob, qb) in specs.items():
             try:
-                m_tmp = arch_model(train_data, p=pb, o=ob, q=qb, dist=dist)
+                m_tmp = arch_model(train_data, p=pb, o=ob, q=qb, dist='ged')
                 res_tmp = m_tmp.fit(update_freq=0, disp='off', show_warning=False)
 
                 # Compare the BIC only if the model is properly fitted
@@ -151,7 +147,7 @@ else:
         # For each step, the best model is used for t+1 price boundaries forecasting
         try:
             p_opt, o_opt, q_opt = best_params
-            fit_bt = arch_model(train_data, p=p_opt, o=o_opt, q=q_opt, dist=dist).fit(update_freq=0, disp='off', show_warning=False)
+            fit_bt = arch_model(train_data, p=p_opt, o=o_opt, q=q_opt, dist='ged').fit(update_freq=0, disp='off', show_warning=False)
             
             # Forecast only if the model is properly fitted
             if fit_bt.convergence_flag != 0: continue

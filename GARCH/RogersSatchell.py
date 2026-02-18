@@ -41,16 +41,12 @@ if interval > days:
 
 if interval < 1:
     aggregate = '1H'
-    dist = 'normal'
 elif 1 <= interval < 3:
     aggregate = '1H'
-    dist = 'normal'
 elif 3 <= interval < 7:
     aggregate = '1H'
-    dist = 'normal'
 else:
     aggregate = '4H'
-    dist = 't'
 
 pointsFull = int(interval * 144)
 dfFull = dfFull.tail(pointsFull)
@@ -88,7 +84,7 @@ bicResults = {}
 # BIC comparison for current period
 for name, prm in specs.items():
     try:
-        model = arch_model(ScaledReturns, p=prm['p'], o=prm['o'], q=prm['q'], x=prm['exog'], dist=dist)
+        model = arch_model(ScaledReturns, p=prm['p'], o=prm['o'], q=prm['q'], x=prm['exog'], dist='ged')
         fit_tmp = model.fit(update_freq=0, disp='off', show_warning=False)
         if fit_tmp.convergence_flag == 0:
             bicResults[name] = fit_tmp.bic
@@ -102,7 +98,7 @@ print(bicDF)
 # Fitting best model
 bestModelName = bicDF.index[0]
 prm = specs[bestModelName]
-bestModel = arch_model(ScaledReturns, p=prm['p'], o=prm['o'], q=prm['q'], x=prm['exog'], dist=dist)
+bestModel = arch_model(ScaledReturns, p=prm['p'], o=prm['o'], q=prm['q'], x=prm['exog'], dist='ged')
 fit = bestModel.fit(update_freq=0, disp='off')
 
 # Forecast
@@ -129,7 +125,7 @@ else:
         for name, prm in specs.items():
             curr_x = prm['exog'].iloc[:i] if prm['exog'] is not None else None
             try:
-                m_tmp = arch_model(train_data, p=prm['p'], o=prm['o'], q=prm['q'], x=curr_x, dist=dist)
+                m_tmp = arch_model(train_data, p=prm['p'], o=prm['o'], q=prm['q'], x=curr_x, dist='ged')
                 res_tmp = m_tmp.fit(update_freq=0, disp='off', show_warning=False)
                 if res_tmp.convergence_flag == 0 and res_tmp.bic < best_bic:
                     best_bic = res_tmp.bic
@@ -141,7 +137,7 @@ else:
             train_x = b_prm['exog'].iloc[:i] if b_prm['exog'] is not None else None
             
             try:
-                model_final = arch_model(train_data, p=b_prm['p'], o=b_prm['o'], q=b_prm['q'], x=train_x, dist=dist)
+                model_final = arch_model(train_data, p=b_prm['p'], o=b_prm['o'], q=b_prm['q'], x=train_x, dist='ged')
                 fit_bt = model_final.fit(update_freq=0, disp='off', show_warning=False)
                 
                 next_x = b_prm['exog'].iloc[i] if b_prm['exog'] is not None else None

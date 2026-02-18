@@ -38,15 +38,13 @@ for idx, m_info in enumerate(markets):
         # Checking the history of data available and adjusting parameters accordingly
         duration = (dfHist.index[-1] - dfHist.index[0]).total_seconds() / 86400
         if duration < 1:
-            # Normal distribution to fit the model more easily on shorter period of time
-            aggregate, dist = '10min', 'normal'
+            aggregate = '10min'
         elif 1 <= duration < 3:
-            aggregate, dist = '20min', 'normal'
+            aggregate = '20min'
         elif 3 <= duration < 7:
-            aggregate, dist = '1H', 'normal'
+            aggregate = '1H'
         else:
-            # Student distribution to take into account extreme price changes on extended periods of time
-            aggregate, dist = '4H', 't'
+            aggregate = '4H'
 
         df = dfHist['p'].resample(aggregate).last().ffill().to_frame()
 
@@ -57,38 +55,26 @@ for idx, m_info in enumerate(markets):
         ScaledReturns = df['logReturn'].dropna() * scale # Autoscaling for arch stability
 
         trainingPoints = 40 
-
-        # We only use the models who regularly obtain the lowest BIC on these markets
-        specs = {'ARCH(1)': (1,0,0), 'GARCH(1,1)': (1,0,1), 'TARCH(1,1,1)': (1,1,1)}
-           
         if len(ScaledReturns) <= trainingPoints + 5:
             continue
 
         print(f"\033[1m[{idx+1}/{len(markets)}]\033[0m  {m_info['name'][:30]}...", end="\r")
 
-        # Fitting the model with the lowest BIC to measure volatility
-        bestBIC = float('inf')
-        bestFit = None
-        
-        for name, (pb, ob, qb) in specs.items():
-            try:
-                m_tmp = arch_model(ScaledReturns, p=pb, o=ob, q=qb, dist=dist)
-                res_tmp = m_tmp.fit(update_freq=0, disp='off', show_warning=False)
-                if res_tmp.bic < bestBIC:
-                    bestBIC = res_tmp.bic
-                    bestFit = res_tmp
-            except: continue
+        # Simple ARCH(1) model.
+        # We'll explore more complexe models later on.
+        m_tmp = arch_model(ScaledReturns, p=1, o=0, q=0, dist='ged')
+        res_tmp = m_tmp.fit(update_freq=0, disp='off', show_warning=False)
 
-        if bestFit:
-            periods_per_year = (365 * 24 * 60) / int(aggregate.replace('min','').replace('H','00').replace('400','240').replace('100','60'))
-            vol_local = (bestFit.conditional_volatility / scale) * np.sqrt(periods_per_year)
-            
-            tempDF = pd.DataFrame({
-                'price': df['p'].iloc[1:],
-                'vol': vol_local
-            }).dropna()
-            
-            allData.append(tempDF)
+        periods_per_year = (365 * 24 * 60) / int(aggregate.replace('min','').replace('H','00').replace('400','240').replace('100','60'))
+        vol_local = (res_tmp.conditional_volatility / scale) * np.sqrt(periods_per_year)
+
+        tempDF = pd.DataFrame({
+            'price': df['p'].iloc[1:],
+            'vol': vol_local
+        }).dropna()
+        
+        allData.append(tempDF)
+
 
     except Exception as e:
         continue
@@ -118,6 +104,8 @@ if allData:
     plt.ylabel('Volatility (%)')
     plt.legend()
     plt.grid(alpha=0.3)
+    plt.xlim(0, 100)
+    plt.ylim(0, df['vol'].max() * 100)
     plt.show()
 else:
     print("Not enough data.")

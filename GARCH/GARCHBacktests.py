@@ -38,15 +38,12 @@ for idx, m_info in enumerate(markets):
         duration = (dfFull.index[-1] - dfFull.index[0]).total_seconds() / 86400
         if duration < 1:
             aggregate = '10min' # Already in 10 minutes intervals
-            dist = 'normal' # To fit the model more easily on shorter period of time
         elif 1 <= duration < 3:
-            dist = 't'
+            aggregate = '20min'
         elif 3 <= duration < 7:
             aggregate = '1H'
-            dist = 't'
         else:
             aggregate = '4H'
-            dist = 't'
 
         df = dfFull['p'].resample(aggregate).last().ffill().to_frame()
 
@@ -85,7 +82,7 @@ for idx, m_info in enumerate(markets):
             # Fitting the models
             for name, (pb, ob, qb) in specs.items():
                 try:
-                    m_tmp = arch_model(train_data, p=pb, o=ob, q=qb, dist=dist)
+                    m_tmp = arch_model(train_data, p=pb, o=ob, q=qb, dist='ged')
                     res_tmp = m_tmp.fit(update_freq=0, disp='off', show_warning=False)
 
                     # Comparing the BIC only if the model is properly fitted
@@ -98,7 +95,7 @@ for idx, m_info in enumerate(markets):
             # For each step, the best model is used for t+1 price boundaries forecasting
             try:
                 p_opt, o_opt, q_opt = best_params
-                fit_bt = arch_model(train_data, p=p_opt, o=o_opt, q=q_opt, dist=dist).fit(update_freq=0, disp='off', show_warning=False)
+                fit_bt = arch_model(train_data, p=p_opt, o=o_opt, q=q_opt, dist='ged').fit(update_freq=0, disp='off', show_warning=False)
                 
                 # Forecast only if the model is properly fitted
                 if fit_bt.convergence_flag != 0: continue
