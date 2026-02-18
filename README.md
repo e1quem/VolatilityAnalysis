@@ -1,5 +1,5 @@
 # VolatilityAnalysis
-This project uses various volatility models in order to measure observed volatility and forecast price interval for Polymarket's Politics and Sports markets.
+This project uses various volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Ornstein-Uhlenbeck process) in order to measure observed volatility and forecast price intervals for Polymarket's Politics and Sports markets.
 
 ## Global analysis of markets
 
@@ -18,10 +18,20 @@ Log-returns on high-volume prediction markets are super-leptokurtik: they have a
 #### 3. ```skewSmile.py```
 The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its eventual smile or skew, we can plot observed volatility according to price using a simple ARCH(1) model. We'll use more complex models later on.
 ![Skew](assets/VolatilitySkew.png)
-This graph does not necessarily indicates volatility skewness, rather a logical mechanism. It reflects how low prices have higher relative changes, and high prices have lower relative changes, with a plateau from 30c to 70c.
+This graph does not necessarily indicates volatility skewness, but rather a logical mechanism. It reflects how low prices have higher relative changes, and high prices have lower relative changes, with a plateau from 30c to 70c.
 
 #### 3. ```getData.py```
-Downloads .csv price history of eligible markets in data/Politics and data/Sports.
+Downloads .csv price history of eligible markets in data/Politics and data/Sports folders.
 
 ## GARCH models
+
+Rogers-Satchell (1991)
+We need candles.
+$$\sigma^2_{rs}=\frac{1}{n}\sum\limits^2_{i=1}(\log(\frac{H_i}{C_i})\log(\frac{H_i}{O_i}+\log\frac{L_i}{C_i}\log\frac{L_i}{O_i}))$$
+
+Ornstein-Uhlenbeck process
+With $y=\log v, \ v=\sigma^2$,
+$$dy=(a-by)dt+cdX_2$$
+
+## HAR-RV model
 
