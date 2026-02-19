@@ -120,8 +120,9 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 - Log-returns on Sports and Politics prediction markets exhibit **extremely high kurtosis**, with a sharp peak and fat tails distribution.
 - No noticeable skew or smile in volatility distribution across price ranges, except for the mechanical relative effect observed for extremely low and high prices.
 - **Model performance** across 133 high-volume markets:
-    * GARCH BIC-comparison method obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. **Most used model is ARCH(1)**. The program couldn't fit the models for 11 markets.
+    * GARCH BIC-comparison method obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets.
     *  HAR-RV method obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points). Similar balance for up and down misses: respectively 50.7% and 49.3%.
+- For the GARCH BIC-comparison method, most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
 
 
 #### 2. Limitations
@@ -137,3 +138,4 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 
 #### 4. Literature
 **Paul Wilmott** (2006). *Paul Wilmott on Quantitative Finance*, 2nd Edition. Wiley.
+[Polymarket API Documentation](https://docs.polymarket.com/api-reference/introduction)
