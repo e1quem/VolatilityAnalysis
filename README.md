@@ -21,7 +21,7 @@ For files in the root folder: ```python3 {name}.py run```.
 
 
 For files in subfolders: ```python3 -m {subfolderName}.{name}```.
-*Example: ```python3 -m GARCH.GARCHbacktests```
+*Example: ```python3 -m GARCH.GARCHbacktests```*
 
 ## Global Analysis of Markets
 
