@@ -1,5 +1,5 @@
 # VolatilityAnalysis
-This project uses volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Ornstein-Uhlenbeck process) to measure observed volatility and forecast price intervals for Polymarket's Politics and Sports markets.
+This project uses volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Ornstein-Uhlenbeck process) to measure observed volatility and forecast price intervals in a sandbox environment: Polymarket's Politics and Sports markets.
 
 ## Global analysis of markets
 
