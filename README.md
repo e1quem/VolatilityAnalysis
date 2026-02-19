@@ -47,7 +47,7 @@ However, we can still use more information by transforming our aggregated data i
 
 In this sense, we use **Rogers & Satchell (1991)** formula
 
-$$\sigma^2_{rs}=\frac{1}{n}\sum^n_{i=1} \left( \log\left(\frac{H_i}{C_i}\right) \log\left(\frac{H_i}{O_i}\right) + \log\left(\frac{L_i}{C_i}\right) \log\left(\frac{L_i}{O_i}\right) \right)$$
+$$\sigma^2_{rs}=\frac{1}{n} \ \sum^n_{i=1} \left( \log \ \left( \ \frac{H_i}{C_i}\right \ ) \ \log \ \left( \ \frac{H_i}{O_i}\right \ ) + \log \ \left( \ \frac{L_i}{C_i}\right \ ) \log\left \ ( \ \frac{L_i}{O_i}\right \ ) \right)$$
 
 as an exogeneous variable vor GARCH(1,1) and TARCH(1,1,1). 
 
