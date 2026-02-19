@@ -86,7 +86,7 @@ This added factor only adds complexity to our models and does not improve them o
 
 Since our data has a relatively high granularity (10m), using GARCH models is sub-optimal: these models were designed to perform on daily prices for extended periods of time, not on intraday price movements.
 
-For intraday predictions, we use the HAR-RV model. Its standard version takes into account different time horizons for its forecasts: monthly, weekly, and daily volatility. Its simple autoregressive structure takes into account different time periods and has a large memory.
+For intraday predictions, we use the HAR-RV model. Its standard version takes into account different time horizons for its forecasts: monthly, weekly, and daily volatility. Its simple autoregressive structure takes into account different time periods and has a large memory with faster computation speed than the slow BIC-comparison method.
 
 #### 1. [ratioTesting.py](HAR-RV/ratioTesting.py)
 
@@ -114,6 +114,12 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 ## Key Findings, Limitations, Further Experimentations and Literature
 
 #### 1. Key Findinds
+
+- Log-returns on Sports and Politics prediction markets have extremely high kurtosis.
+- There is no noticable skew or smile in volatility repartition across price, except for the mechanical relative price effect.
+- On 133 high-volume markets, there were 11 fit errors. On the remaining 122, GARCH BIC-comparison method obtains an **93.8% average accuracy** (23,332 missed for 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. **Most used model is ARCH(1)**.
+- Across 133 high-volume markets, HAR-RV method obtains an **95.81% average accuracy** (20,297 misses for 50,5162 data points). **Up and down misses are even**: respectively 50.7% and 49.3%.
+
 
 #### 2. Limitations
 

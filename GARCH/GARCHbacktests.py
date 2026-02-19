@@ -70,7 +70,7 @@ for idx, m_info in enumerate(markets):
         hits = 0
         totalTests = len(ScaledReturns)- start_index - 1
 
-        print(f"\n\033[1m[{idx + 1}/{len(markets)}]\033[0m \033[3m{market_name} \033[0m")
+        print(f"\033[1m[{idx + 1}/{len(markets)}]\033[0m \033[3m{market_name} \033[0m")
         
 
         for i in range(start_index, len(ScaledReturns) - 1):
@@ -163,7 +163,7 @@ for idx, m_info in enumerate(markets):
                 'Accuracy': round(accuracy_10m, 2),
                 'Top Model': model_usage
             })
-            print(f"      {accuracy_10m:.2f}% accuracy")
+            print(f"   Accuracy: {accuracy_10m:.2f}%")
         else:
             print(f"Not enough data points to train the model.")
 
@@ -174,6 +174,12 @@ for idx, m_info in enumerate(markets):
 report_df = pd.DataFrame(summary_report)
 if not report_df.empty:
     print(report_df.to_string(index=False))
+    average_acc = report_df['Accuracy'].mean()
+    global_top_model = report_df['Top Model'].mode()[0]
+
+    print(f"\nAverage accuracy   : {average_acc:.2f}%")
+    print(f"Most frequent model: {global_top_model}")
+
 else:
     print("No markets were successfully analyzed.")
 

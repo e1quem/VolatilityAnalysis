@@ -123,6 +123,8 @@ for idx, m_info in enumerate(markets):
 report_df = pd.DataFrame(summary_report)
 if not report_df.empty:
     print(report_df.to_string(index=False))
+    avg_acc = report_df['Accuracy'].mean()
+    print(f"\nAverage accuracy: {avg_acc:.2f}%")
 
 # Plot
 if all_market_results:
