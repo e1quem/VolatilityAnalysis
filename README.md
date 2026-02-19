@@ -3,6 +3,16 @@ This project uses volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Or
 
 ## How to run
 
+#### 1. Requirements 
+
+In you venv, run ```pip install -r requirements.txt```.
+
+#### 2. Running the files
+
+- For files in the root folder: ```python3 {name}.py run```. *Example: ```python3 skewSmile.py run```*
+- For files in subfolders: ```python3 -m {subfolderName}.{name}```. *Example: ```python3 -m GARCH.GARCHbacktests```
+
+
 ## Global analysis of markets
 
 #### 1. [utils.py](./utils.py)
@@ -11,7 +21,7 @@ Among these categories, we add selection criteria:
 - **High Volume**: we used high-volume markets (1M+ volume) for this analysis. This setting can be modified by user input for each program.
 - **Sufficient price change**: in order to measure volatility, we need price movement. Hence, we filter out markets whose price haven't moved in the last month, week, or day.
 
-With these filters, between 100 and 150 markets should remain eligible.
+With these filters, between 100 and 150 markets remain eligible.
 
 #### 2. [returnsDistribution.py](./returnsDistribution.py)
 Before applying volatility models to our dataset, we need to understand its characteristics.
@@ -29,21 +39,21 @@ Downloads .csv price history of eligible markets in data/Politics and data/Sport
 ## GARCH models
 
 #### 1. [GARCHbacktest.py](GARCH/GARCHbacktest.py)
-This file uses GARCH volatility models to backtest volatility forecasts on individual markets (requires a slug). The model is fitted on training points, and the volatility forecast it produces is then used to define 95% confidence price interval forecasts for the next aggregated time period. Then, 10m price is used to count hits (price is in the interval) and misses (price is outside of the predicted price range).
+This file uses GARCH volatility models to backtest volatility forecasts on individual markets (requires a slug). The model is fitted on training points, and the volatility forecast it produces is then used to define a 95% confidence price interval forecasts for the next aggregated time period. Then, 10m price is used to count hits (price is in the interval) and misses (price is outside of the predicted price range).
 
-We do not fit one model for all data points. For each step, we fit 6 models: ARCH(1), ARCH(2), GARCH(1,1), GARCH(2,1), TARCH(1,1,1), TARCH(2,2,1), before comparing their BIC and using the model with the lowest one for the forecast.
+Instead of fitting one model to all available data, we take a more adaptative approach. For each step, we fit 6 models: ARCH(1), ARCH(2), GARCH(1,1), GARCH(2,1), TARCH(1,1,1), TARCH(2,2,1), before comparing their BIC and using the model with the lowest one for the forecast. This program outputs model usage to observe which models are most often used on which markets.
 
 ![GARCH](assets/GARCH.png)
 
 #### 2. [GARCHbacktests.py](GARCH/GARCHbacktests.py)
 This file has the same basic principle as ```GARCHbacktest.py``` but iterates on multiple high-volume markets. 
-To reduce computing power usage, models are reduced to ARCH(1), GARCH(1,1) and TARCH(1,1,1), since these were the ones regularly obtaining the lowest BICs on these markets. 
+To reduce computing power usage, models are reduced to ARCH(1), GARCH(1,1) and TARCH(1,1,1), since these were the ones regularly obtaining the lowest BICs. 
 
 ![GARCHs](assets/GARCHs.png)
 
 #### 3. [RogersSatchell.py](GARCH/RogersSatchell.py)
 
-GARCH models can use exogenous variables. It would have been useful to use data such as volume in the model. However, such historical data is not obtainable via Polymarket API, obtaining it would require constant Websocket connection and data hoarding for a few weeks. This is a potential future projects to bypass the 10m maximumum fidelity, and the lack of other variables such as volume.
+GARCH models can use exogenous variable: it would have been useful to use data such as volume to train these models. However, such historical data is not obtainable via Polymarket API. Obtaining historical volume would require constant Websocket connection and data hoarding for weeks. This difficulty could be a future projects needed to bypass the 10m maximumum fidelity and 30 days history of historical price, and the lack of other variables such as volume and order book dynamics.
 
 However, we can still use more information by transforming our aggregated data into candles, which carries more information than simple closing prices.
 
@@ -61,17 +71,18 @@ This added factor only adds complexity to our models and does not improve them o
 - Ornstein-Uhlenbeck process
 - REGARCH
 
+
 ## HAR-RV model
 
-Since our data has a relatively high granularity (10m), using GARCH models is sub-optimal: these models are usually made to perform on daily prices for extended periods of time.
+Since our data has a relatively high granularity (10m), using GARCH models is sub-optimal: these models were designed to perform on daily prices for extended periods of time, not on intraday price movements.
 
-For intraday predictions, we use the HAR-RV model. Its standard version takes into account different time horizons: monthly, weekly, and daily volatility. Its simple autoregressive structure is simple but takes into account different time periods and has a large memory.
+For intraday predictions, we use the HAR-RV model. Its standard version takes into account different time horizons for its forecasts: monthly, weekly, and daily volatility. Its simple autoregressive structure takes into account different time periods and has a large memory.
 
 #### 1. [ratioTesting.py](HAR-RV/ratioTesting.py)
 
-This file allows to compare different ratios on individual markets (requires market slug). The standard ratio is 1:7:30. User can add ratios it wants to test in the file. 1 unit corresponds to a 10m time period.
+This file allows to compare different ratios on individual markets (requires market slug). The standard ratio is 1:7:30. User can add testing ratios in the file. 1 unit corresponds to a 10m time period.
 
-The rankings it produces was used to define ratios to use on HAR-RV backtests.
+This testing process and the rankings this file produces were used to define ratios used for HAR-RV backtests.
 
 #### 2. [HARbacktest.py](HAR-RV/HARbacktest.py)
 
@@ -90,4 +101,16 @@ With HAR-RV, the 95% confidence interval is tighter. Since it operates on more g
 Same structure as ```HARbacktest.py``` but allows to test multiple markets at once with type and volume filtering.
 
 
-## Findings
+## Limitations and further experimentations
+
+#### 1. Limitations
+
+- Due to the low granularity of data, it is impossible to use HFT intraday models that would run on minute interval, or less.
+- Lack of data. It is impossible to use volume or order book dynamics as explanatory variables.
+
+
+#### 2. Further experimentation
+
+- Linking this project with news-driven analytics: using breaking news to explain sudden volatility on prediction markets.
+- Implementing up and down misses as trading signals for a theoretical trading project to backtest on various market types.
+- Collecting data ourselves in order to use more signals for advanced models.
