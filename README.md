@@ -16,8 +16,8 @@ In you venv, run ```pip install -r requirements.txt```.
 
 #### 2. Running the files
 
-- For files in the root folder: ```python3 {name}.py run```. *Example: ```python3 skewSmile.py run```*
-- For files in subfolders: ```python3 -m {subfolderName}.{name}```. *Example: ```python3 -m GARCH.GARCHbacktests```
+For files in the root folder: ```python3 {name}.py run```. *Example: ```python3 skewSmile.py run```*
+For files in subfolders: ```python3 -m {subfolderName}.{name}```. *Example: ```python3 -m GARCH.GARCHbacktests```
 
 ## Global Analysis of Markets
 
