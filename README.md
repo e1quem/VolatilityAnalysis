@@ -1,7 +1,14 @@
 # VolatilityAnalysis
 This project uses volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Ornstein-Uhlenbeck process) to measure observed volatility and forecast price intervals in a sandbox environment: Polymarket's Politics and Sports markets.
 
-## How to run
+## Table of contents
+* [How to Run](#how-to-run)
+* [Global Analysis of Markets](#global-analysis-of-markets)
+* [GARCH Models](#garch-models)
+* [HAR-RV Model](#har-rv-model)
+* [Key Findings, Limitations and Further Experimentations](#key-findings-limitations-and-further-experimentations)
+
+## How to Run
 
 #### 1. Requirements 
 
@@ -13,7 +20,7 @@ In you venv, run ```pip install -r requirements.txt```.
 - For files in subfolders: ```python3 -m {subfolderName}.{name}```. *Example: ```python3 -m GARCH.GARCHbacktests```
 
 
-## Global analysis of markets
+## Global Analysis of Markets
 
 #### 1. [utils.py](./utils.py)
 In order to pursue volatility analysis, we focus on two types of Polymarket prediction markets: Sports and Politics markets. These are the most common and most popular markets on this platform.
@@ -36,7 +43,7 @@ This graph does not necessarily indicate volatility skewness, but rather a logic
 #### 4. [getData.py](./getData.py)
 Downloads .csv price history of eligible markets in data/Politics and data/Sports folders.
 
-## GARCH models
+## GARCH Models
 
 #### 1. [GARCHbacktest.py](GARCH/GARCHbacktest.py)
 This file uses GARCH volatility models to backtest volatility forecasts on individual markets (requires a slug). The model is fitted on training points, and the volatility forecast it produces is then used to define a 95% confidence price interval forecasts for the next aggregated time period. Then, 10m price is used to count hits (price is in the interval) and misses (price is outside of the predicted price range).
@@ -72,7 +79,7 @@ This added factor only adds complexity to our models and does not improve them o
 - REGARCH
 
 
-## HAR-RV model
+## HAR-RV Model
 
 Since our data has a relatively high granularity (10m), using GARCH models is sub-optimal: these models were designed to perform on daily prices for extended periods of time, not on intraday price movements.
 
@@ -101,7 +108,7 @@ With HAR-RV, the 95% confidence interval is tighter. Since it operates on more g
 Same structure as ```HARbacktest.py``` but allows to test multiple markets at once with type and volume filtering.
 
 
-## Limitations and further experimentations
+## Key Findings, Limitations and Further Experimentations
 
 #### 1. Limitations
 
