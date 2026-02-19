@@ -131,7 +131,7 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 
 #### 3. Further Experimentation
 
-- Linking this project with news-driven analytics: using breaking news to explain sudden volatility on prediction markets.
+- Linking this project with news-driven analytics: using breaking news to explain sudden volatility peaks on prediction markets.
 - Implementing up and down misses as trading signals for a theoretical trading project to backtest on various market types.
 - Collecting data ourselves in order to use more signals for advanced models.
 
