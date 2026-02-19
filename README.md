@@ -138,4 +138,5 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 
 #### 4. Literature
 **Paul Wilmott** (2006). *Paul Wilmott on Quantitative Finance*, 2nd Edition. Wiley.
+
 [Polymarket API Documentation](https://docs.polymarket.com/api-reference/introduction)
