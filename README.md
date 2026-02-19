@@ -127,7 +127,7 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 #### 2. Limitations
 
 - Due to the low granularity of data, it is impossible to use HFT intraday models that would run on minute interval, or less.
-- Lack of data. It is impossible to use volume or order book dynamics as explanatory variables.
+- Lack of data. It is impossible to use volume, spread, or order book dynamics as explanatory variables.
 
 #### 3. Further Experimentation
 
