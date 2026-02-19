@@ -12,20 +12,13 @@ This project uses volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Or
 
 #### 1. Requirements 
 
-In you venv, run ```pip install -r requirements.txt```.
+In your venv, run ```pip install -r requirements.txt```.
 
 #### 2. Running the files
 
-<<<<<<< Updated upstream
-For files in the root folder: ```python3 {name}.py run```. 
-*Example: ```python3 skewSmile.py run```*
-=======
 For files in the root folder: ```python3 {name}.py run```.
 *Example: ```python3 skewSmile.py run```*
 
-For files in subfolders: ```python3 -m {subfolderName}.{name}```.
-*Example: ```python3 -m GARCH.GARCHbacktests```*
->>>>>>> Stashed changes
 
 For files in subfolders: ```python3 -m {subfolderName}.{name}```.
 *Example: ```python3 -m GARCH.GARCHbacktests```
