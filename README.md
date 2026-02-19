@@ -47,7 +47,7 @@ However, we can still use more information by transforming our aggregated data i
 
 In this sense, we use **Rogers & Satchell (1991)** formula
 
-$$\sigma^2_{rs} = \frac{1}{n} \sum^n_{i=1} \left( \log\left(\frac{H_i}{C_i}\right) \log\left(\frac{H_i}{O_i}\right) \,\, + \,\, \log\left(\frac{L_i}{C_i}\right) \log\left(\frac{L_i}{O_i}\right) \right)$$
+$$\sigma^2_{rs}=\frac{1}{n}\sum^n_{i=1} \left( \log\left(\frac{H_i}{C_i}\right) \log\left(\frac{H_i}{O_i}\right) + \log\left(\frac{L_i}{C_i}\right) \log\left(\frac{L_i}{O_i}\right) \right)$$
 
 as an exogeneous variable vor GARCH(1,1) and TARCH(1,1,1). 
 
@@ -60,4 +60,32 @@ This added factor only adds complexity to our models and does not improve them o
 - REGARCH
 
 ## HAR-RV model
+
+Since our data has a relatively high granularity (10m), using GARCH models is sub-optimal: these models are usually made to perform on daily prices for extended periods of time.
+
+For intraday predictions, we use the HAR-RV model. Its standard version takes into account different time horizons: monthly, weekly, and daily volatility. Its simple autoregressive structure is simple but takes into account different time periods and has a large memory.
+
+#### 1. ```ratioTesting.py```
+
+This file allows to compare different ratios on individual markets (requires market slug). The standard ratio is 1:7:30. User can add ratios it wants to test in the file. 1 unit corresponds to a 10m time period.
+
+The rankings it produces was used to define ratios to use on HAR-RV backtests.
+
+#### 2. ```HARbacktest.py```
+
+This file follows the same structure as ```GARCHbacktest.py```but uses HAR-RV instead of GARCH models in order to forecast volatility. HAR-RV ranges are adaptative according to the length of available data.
+
+By default, we chose: 
+- a reactive 6:18:36 (1h:3h:6h) for markets with less than a day of price history
+- a longer 24:72:144 (4h:12h:24h) for all other markets.
+
+![HAR-RV](assets/HAR-RV.png)
+
+With HAR-RV, the 95% confidence interval is tighter. Since it operates on more granular data (10m compared to sometimes 4h for the GARCH method), this tight can maintain an accuracy close the 95% with more misses but also more hits.
+
+#### 3. ```HARbacktests.py```
+
+Same structure as ```HARbacktest.py``` but allows to test multiple markets at once according to type and volume.
+
+
 
