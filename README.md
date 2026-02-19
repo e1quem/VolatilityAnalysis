@@ -37,7 +37,7 @@ We do not fit one model for all data points. For each step, we fit 6 models: ARC
 This file has the same basic principe as ```GARCHbacktest.py```but iterates on multiple high-volume markets. 
 To reduce computing power usage, models are reduced to ARCH(1), GARCH(1,1) and TARCH(1,1,1), since these were the three ones regularly obtaining the lowest BICs on these markets. 
 
-![GARCHs](assets/GARCH.png)
+![GARCHs](assets/GARCHs.png)
 
 #### 3. ```RogersSatchell.py````
 
