@@ -70,7 +70,7 @@ However, we can still use more information by transforming our aggregated data i
 
 In this sense, we use **Rogers & Satchell (1991)** formula
 
-$$\sigma^2_{rs}=\frac{1}{n}\hspace{0.5em}\sum^n_{i=1} \left( \log\hspace{0.5em}\left(\hspace{0.5em}\frac{H_i}{C_i}\right\hspace{0.5em}) \hspace{0.5em}\log\hspace{0.5em}\left(\hspace{0.5em}\frac{H_i}{O_i}\right\hspace{0.5em}) + \log\left\hspace{0.5em}(\hspace{0.5em}\frac{L_i}{C_i}\right\hspace{0.5em})\hspace{0.5em} \log\left\hspace{0.5em}(\hspace{0.5em}\frac{L_i}{O_i}\right\hspace{0.5em}) \hspace{0.2em}\right)$$
+$$\sigma^2_{rs}=\frac{1}{n}\hspace{0.5em}\sum^n_{i=1} \left( \log\hspace{0.5em}\left(\hspace{0.5em}\frac{H_i}{C_i}\hspace{0.5em}\right) \hspace{0.5em}\log\hspace{0.5em}\left(\hspace{0.5em}\frac{H_i}{O_i}\hspace{0.5em}\right) + \log\hspace{0.5em}\left(\hspace{0.5em}\frac{L_i}{C_i}\hspace{0.5em}\right) \hspace{0.5em}\log\hspace{0.5em}\left(\hspace{0.5em}\frac{L_i}{O_i}\hspace{0.5em}\right) \right)$$
 
 as an exogenous variable for GARCH(1,1) and TARCH(1,1,1). 
 
