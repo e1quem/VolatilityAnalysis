@@ -6,7 +6,7 @@ This project uses volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Or
 * [Global Analysis of Markets](#global-analysis-of-markets)
 * [GARCH Models](#garch-models)
 * [HAR-RV Model](#har-rv-model)
-* [Key Findings, Limitations and Further Experimentations](#key-findings-limitations-and-further-experimentations)
+* [Key Findings, Limitations, Further Experimentations and Literature](#key-findings-limitations-further-experimentations-and-literature)
 
 ## How to Run
 
@@ -116,9 +116,9 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 #### 1. Key Findinds
 
 - Log-returns on Sports and Politics prediction markets have extremely high kurtosis.
-- There is no noticable skew or smile in volatility repartition across price, except for the mechanical relative price effect.
-- On 133 high-volume markets, there were 11 fit errors. On the remaining 122, GARCH BIC-comparison method obtains an **93.8% average accuracy** (23,332 missed for 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. **Most used model is ARCH(1)**.
-- Across 133 high-volume markets, HAR-RV method obtains an **95.81% average accuracy** (20,297 misses for 50,5162 data points). **Up and down misses are even**: respectively 50.7% and 49.3%.
+- There is no noticeable skew or smile in volatility repartition across price ranges, except for the mechanical relative effect observed for extremely low and high prices.
+- On 133 high-volume markets, there were 11 fit errors. On the remaining 122, GARCH BIC-comparison method obtains an **93.8% average accuracy** (23,332 misses for 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. **Most used model is ARCH(1)**.
+- Across 133 high-volume markets, HAR-RV method obtains a **95.81% average accuracy** (20,297 misses for 50,5162 data points). **Up and down misses are even**: respectively 50.7% and 49.3%.
 
 
 #### 2. Limitations
