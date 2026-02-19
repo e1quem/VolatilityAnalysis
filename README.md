@@ -19,7 +19,7 @@ In you venv, run ```pip install -r requirements.txt```.
 - For files in the root folder: ```python3 {name}.py run```. *Example: ```python3 skewSmile.py run```*
 - For files in subfolders: ```python3 -m {subfolderName}.{name}```. *Example: ```python3 -m GARCH.GARCHbacktests```
 
-#####
+##### 
 
 ## Global Analysis of Markets
 
@@ -44,7 +44,7 @@ This graph does not necessarily indicate volatility skewness, but rather a logic
 #### 4. [getData.py](./getData.py)
 Downloads .csv price history of eligible markets in data/Politics and data/Sports folders.
 
-#####
+##### 
 
 ## GARCH Models
 
@@ -81,7 +81,7 @@ This added factor only adds complexity to our models and does not improve them o
 - Ornstein-Uhlenbeck process
 - REGARCH
 
-#####
+##### 
 
 ## HAR-RV Model
 
@@ -111,7 +111,7 @@ With HAR-RV, the 95% confidence interval is tighter. Since it operates on more g
 
 Same structure as ```HARbacktest.py``` but allows to test multiple markets at once with type and volume filtering.
 
-#####
+##### 
 
 ## Key Findings, Limitations and Further Experimentations
 
