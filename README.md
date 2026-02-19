@@ -106,7 +106,7 @@ By default, we chose:
 
 ![HAR-RV](assets/HAR-RV.png)
 
-With HAR-RV, the 95% confidence interval is tighter. Since it operates on more granular data (10m compared to sometimes 4h for the GARCH method), this tight can maintain an accuracy close the 95% with more misses but also more hits.
+With HAR-RV, the 95% confidence interval is tighter. Since it operates on more granular data (10m compared to sometimes 4h for the GARCH method), this tight interval can maintain an accuracy close the 95% with more misses but also more hits.
 
 #### 3. [HARbacktests.py](HAR-RV/HARbacktests.py)
 
