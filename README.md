@@ -36,7 +36,7 @@ With these filters, between 100 and 150 markets remain eligible.
 #### 2. [returnsDistribution.py](./returnsDistribution.py)
 Before applying volatility models to our dataset, we need to understand its characteristics.
 ![GARCHOutput](assets/StatisticalDistribution.png)
-Log-returns on high-volume prediction markets are highly leptokurtik: they have a highly positive Kurtosis. Thus, using a normal distribution for our GARCH analysis wouldn't be accurate. From now on, we'll use the *Generalized Error Distribution* (GED) of the garch library to fit our models, for adaptative sharp peak and larger tails.
+Log-returns on high-volume prediction markets are highly leptokurtic: they have a highly positive Kurtosis. Thus, using a normal distribution for our GARCH analysis wouldn't be accurate. From now on, we'll use the *Generalized Error Distribution* (GED) of the garch library to fit our models, for adaptative sharp peak and larger tails.
 
 #### 3. [skewSmile.py](./skewSmile.py)
 The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its eventual smile or skew, we can plot observed volatility according to price using a simple ARCH(1) model. We'll use more complex models later on.
@@ -53,6 +53,8 @@ Downloads .csv price history of eligible markets in data/Politics and data/Sport
 This file uses GARCH volatility models to backtest volatility forecasts on individual markets (requires a slug). The model is fitted on training points, and the volatility forecast it produces is then used to define a 95% confidence price interval forecasts for the next aggregated time period. Then, 10m price is used to count hits (price is in the interval) and misses (price is outside of the predicted price range).
 
 Instead of fitting one model to all available data, we take a more adaptative approach. For each step, we fit 6 models: ARCH(1), ARCH(2), GARCH(1,1), GARCH(2,1), TARCH(1,1,1), TARCH(2,2,1), before comparing their BIC and using the model with the lowest one for the forecast. This program outputs model usage to observe which models are most often used on which markets.
+
+BIC stands for *Bayesian Information Criterion*. It is used to evaluate the fit of different models, rewarding both fit (how well the model explains the data) and simplicity. A lower BIC indicates a better model.
 
 ![GARCH](assets/GARCH.png)
 
@@ -115,10 +117,11 @@ Same structure as ```HARbacktest.py``` but allows to test multiple markets at on
 
 #### 1. Key Findinds
 
-- Log-returns on Sports and Politics prediction markets have extremely high kurtosis.
-- There is no noticeable skew or smile in volatility repartition across price ranges, except for the mechanical relative effect observed for extremely low and high prices.
-- On 133 high-volume markets, there were 11 fit errors. On the remaining 122, GARCH BIC-comparison method obtains an **93.8% average accuracy** (23,332 misses for 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. **Most used model is ARCH(1)**.
-- Across 133 high-volume markets, HAR-RV method obtains a **95.81% average accuracy** (20,297 misses for 50,5162 data points). **Up and down misses are even**: respectively 50.7% and 49.3%.
+- Log-returns on Sports and Politics prediction markets exhibit **extremely high kurtosis**, with a sharp peak and fat tails distribution.
+- No noticeable skew or smile in volatility distribution across price ranges, except for the mechanical relative effect observed for extremely low and high prices.
+- **Model performance** across 133 high-volume markets:
+ - GARCH BIC-comparison method obtained **93.8% average accuracy** (23,332 misses out of 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. **Most used model is ARCH(1)**. The program couldn't fit the models for 11 markets.
+ - HAR-RV method obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points). Similar balance for up and down misses: respectively 50.7% and 49.3%.
 
 
 #### 2. Limitations
