@@ -19,7 +19,7 @@ Log-returns on high-volume prediction markets are super-leptokurtik: they have a
 #### 3. ```skewSmile.py```
 The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its eventual smile or skew, we can plot observed volatility according to price using a simple ARCH(1) model. We'll use more complex models later on.
 ![Skew](assets/VolatilitySkew.png)
-This graph does not necessarily indicates volatility skewness, but rather a logical mechanism. It reflects how low prices have higher relative changes, and high prices have lower relative changes, with a plateau from 30c to 70c.
+This graph does not necessarily indicate volatility skewness, but rather a logical mechanism. It reflects how low prices have higher relative changes, and high prices have lower relative changes, with a plateau from 30c to 70c.
 
 #### 3. ```getData.py```
 Downloads .csv price history of eligible markets in data/Politics and data/Sports folders.
@@ -47,7 +47,7 @@ However, we can still use more information by transforming our aggregated data i
 
 In this sense, we use **Rogers & Satchell (1991)** formula
 
-$$\sigma^2_{rs}=\frac{1}{n}\sum\limits^2_{i=1}(\log(\frac{H_i}{C_i})\log(\frac{H_i}{O_i}+\log\frac{L_i}{C_i}\log\frac{L_i}{O_i}))$$
+$$\sigma^2_{rs}=\frac{1}{n}\sum^n_{i=1} \left( \log\left(\frac{H_i}{C_i}\right) \log\left(\frac{H_i}{O_i}\right) + \log\left(\frac{L_i}{C_i}\right) \log\left(\frac{L_i}{O_i}\right) \right)$$
 
 as an exogeneous variable vor GARCH(1,1) and TARCH(1,1,1). 
 
