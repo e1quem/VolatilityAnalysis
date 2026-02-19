@@ -19,8 +19,6 @@ In you venv, run ```pip install -r requirements.txt```.
 - For files in the root folder: ```python3 {name}.py run```. *Example: ```python3 skewSmile.py run```*
 - For files in subfolders: ```python3 -m {subfolderName}.{name}```. *Example: ```python3 -m GARCH.GARCHbacktests```
 
-##### 
-
 ## Global Analysis of Markets
 
 #### 1. [utils.py](./utils.py)
@@ -44,7 +42,6 @@ This graph does not necessarily indicate volatility skewness, but rather a logic
 #### 4. [getData.py](./getData.py)
 Downloads .csv price history of eligible markets in data/Politics and data/Sports folders.
 
-##### 
 
 ## GARCH Models
 
@@ -75,13 +72,11 @@ as an exogenous variable for GARCH(1,1) and TARCH(1,1,1).
 
 This added factor only adds complexity to our models and does not improve them on these prediction markets. They never obtain the lowest BIC compared to their simpler counterparts.
 
-
 #### 4. Upcoming
 
 - Ornstein-Uhlenbeck process
 - REGARCH
 
-##### 
 
 ## HAR-RV Model
 
@@ -111,18 +106,21 @@ With HAR-RV, the 95% confidence interval is tighter. Since it operates on more g
 
 Same structure as ```HARbacktest.py``` but allows to test multiple markets at once with type and volume filtering.
 
-##### 
 
-## Key Findings, Limitations and Further Experimentations
+## Key Findings, Limitations, Further Experimentations and Literature
 
-#### 1. Limitations
+#### 1. Key Findinds
+
+#### 2. Limitations
 
 - Due to the low granularity of data, it is impossible to use HFT intraday models that would run on minute interval, or less.
 - Lack of data. It is impossible to use volume or order book dynamics as explanatory variables.
 
-
-#### 2. Further experimentation
+#### 3. Further Experimentation
 
 - Linking this project with news-driven analytics: using breaking news to explain sudden volatility on prediction markets.
 - Implementing up and down misses as trading signals for a theoretical trading project to backtest on various market types.
 - Collecting data ourselves in order to use more signals for advanced models.
+
+#### 4. Literature
+**Paul Wilmott** (2006). *Paul Wilmott on Quantitative Finance*, 2nd Edition. Wiley.
