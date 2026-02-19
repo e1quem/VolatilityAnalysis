@@ -28,7 +28,7 @@ Downloads .csv price history of eligible markets in data/Politics and data/Sport
 
 ## GARCH models
 
-#### 1. [GARCHbacktest.py](.GARCH/GARCHbacktest.py)
+#### 1. [GARCHbacktest.py](GARCH/GARCHbacktest.py)
 This file uses GARCH volatility models to backtest volatility forecasts on individual markets (requires a slug). The model is fitted on training points, and the volatility forecast it produces is then used to define 95% confidence price interval forecasts for the next aggregated time period. Then, 10m price is used to count hits (price is in the interval) and misses (price is outside of the predicted price range).
 
 We do not fit one model for all data points. For each step, we fit 6 models: ARCH(1), ARCH(2), GARCH(1,1), GARCH(2,1), TARCH(1,1,1), TARCH(2,2,1), before comparing their BIC and using the model with the lowest one for the forecast.
