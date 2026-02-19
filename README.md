@@ -66,7 +66,7 @@ To reduce computing power usage, models are reduced to ARCH(1), GARCH(1,1) and T
 
 #### 3. [RogersSatchell.py](GARCH/RogersSatchell.py)
 
-GARCH models can use exogenous variable: it would have been useful to use data such as volume to train these models. However, such historical data is not obtainable via Polymarket API. Obtaining historical volume would require constant Websocket connection and data hoarding for weeks. This difficulty could be a future projects needed to bypass the 10m maximumum fidelity and 30 days history of historical price, and the lack of other variables such as volume and order book dynamics.
+GARCH models can use exogenous variables. Volume can for example be used to fit volatility models. However, such historical volume data is not obtainable via Polymarket API. Obtaining historical volume would require constant Websocket connection and data hoarding for weeks. This could become a future project in order to bypass the 10m maximumum fidelity and 30 days limit on price history, as well as the lack of other variables such as volume, spread and order book dynamics.
 
 However, we can still use more information by transforming our aggregated data into candles, which carries more information than simple closing prices.
 
