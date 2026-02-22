@@ -88,11 +88,11 @@ This added factor only adds complexity to our models and does not improve them o
 
 Since our data has a relatively high granularity (10m), using GARCH models is sub-optimal: these models were designed to perform on daily prices for extended periods of time, not on intraday price movements.
 
-For intraday predictions, we use the HAR-RV model. Its standard version takes into account different time horizons for its forecasts: monthly, weekly, and daily volatility. Its simple autoregressive structure takes into account different time periods and has a large memory with faster computation speed than the slow BIC-comparison method.
+For intraday predictions, we use the HAR-RV model. Its traditional finance version takes into account different time horizons for its volatility forecasts: daily, weekly and monthly volatility (1:5:22). Its simple autoregressive structure takes into account different time periods and has a large memory with faster computation speed than the slow BIC-comparison method.
 
 #### 1. [ratioTesting.py](HAR-RV/ratioTesting.py)
 
-This file allows to compare different ratios on individual markets (requires market slug). The standard ratio is 1:7:30. User can add testing ratios in the file. 1 unit corresponds to a 10m time period.
+This file allows to compare different ratios on individual markets (requires market slug). The standard ratio is 1:5:22. For markets running 24/7, its 1:7:30. User can add testing ratios in the file. 1 unit corresponds to a 10m time period.
 
 This testing process and the rankings this file produces were used to define ratios used for HAR-RV backtests.
 
@@ -110,8 +110,9 @@ With HAR-RV, the 95% confidence interval is tighter. Since it operates on more g
 
 #### 3. [HARbacktests.py](HAR-RV/HARbacktests.py)
 
-Same structure as ```HARbacktest.py``` but allows to test multiple markets at once with type and volume filtering.
+Same structure as ```HARbacktest.py```, this file tests multiple markets with type and volume filtering. It provides residuals measurement and Durbin-Watson calculation for each market.
 
+![HAR-RV Backtests](assets/HAR_residuals.png)
 
 ## Key Findings, Limitations, Further Experimentations and Literature
 

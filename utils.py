@@ -51,7 +51,7 @@ def marketType(markets):
     Sports = [m for m in markets if "Sports" in m['tags']]
 
     if len(Politics) > 0 or len(Sports) > 0:
-        print(f"Found \033[1m{len(Politics)}\033[0m Politics markets and \033[1m{len(Sports)}\033[0m Sports markets")
+        print(f"Found \033[1m{len(Politics)}\033[0m Politics markets and \033[1m{len(Sports)}\033[0m Sports markets with sufficient price change")
         type = input("\033[1mSelect type\033[0m: Politics (1) | Sports (2) | Both (3): ")
         type = float(type)
     else: 
