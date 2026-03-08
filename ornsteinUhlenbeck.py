@@ -165,7 +165,7 @@ for file_path in markets:
         avg_mu = final['mu'].mean()
         avg_sigma = final['sigma'].mean()
 
-        print(f"Accuracy: {accuracy:.2f}%")
+        print(f"Accuracy:       {accuracy:.2f}%")
         print(f"Hits:           {hits} ({hits/total_points*100:.2f}%)")
         print(f"Miss up:        {miss_up} ({miss_up/total_points*100:.2f}%)")
         print(f"Miss down:      {miss_down} ({miss_down/total_points*100:.2f}%)")
