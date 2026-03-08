@@ -106,7 +106,7 @@ We estimate these parameters by fitting an AR(1) process on rolling realized vol
 
 ```
 Will_Phan_Văn_Giang_be_the_next_President_of_Vietnam?_0.4.csv...
-Accuracy: 94.46%
+Accuracy:       94.46%
 Hits:           3120 (94.46%)
 Miss up:        108 (3.27%)
 Miss down:      75 (2.27%)
