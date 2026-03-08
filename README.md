@@ -76,11 +76,12 @@ GARCH models can use exogenous variables in their forecasts. For volatility mode
 
 Still, we can use additionnal information by transforming our aggregated price data into price candles, since the latter carries more information than simple closing prices.
 
-In this sense, we use **Rogers & Satchell (1991)** formula
+In this sense, we use **Rogers & Satchell (1991)** formula as an exogenous variable for GARCH(1,1) and TARCH(1,1,1) models:
 
 $$\sigma^2_{rs}=\frac{1}{n}\hspace{0.5em}\sum^n_{i=1} \left( \log\hspace{0.3em}\left(\hspace{0.3em}\frac{H_i}{C_i}\hspace{0.3em}\right) \hspace{0.3em}\log\hspace{0.3em}\left(\hspace{0.3em}\frac{H_i}{O_i}\hspace{0.3em}\right) + \log\hspace{0.3em}\left(\hspace{0.3em}\frac{L_i}{C_i}\hspace{0.3em}\right) \hspace{0.3em}\log\hspace{0.3em}\left(\hspace{0.3em}\frac{L_i}{O_i}\hspace{0.3em}\right) \right)$$
 
-as an exogenous variable for GARCH(1,1) and TARCH(1,1,1) models.
+*With $O_i$ as opening price, $C_i$ as closing price, $H_i$ as highest price and $L_i$ as lowest price.*
+
 
 After running this version of our models on price data, we observe that this new factor purely adds complexity and does not improve our models on these preidction markets. RS variations of basic models never obtain the lowest BIC compared to their simpler counterparts.
 
@@ -116,7 +117,7 @@ With HAR-RV, the 95% confidence interval we obtain is tighter. Since it operates
 
 #### 3. [HARbacktests.py](HAR-RV/HARbacktests.py)
 
-This file shares the same structure as ```HARbacktest.py```. It tests multiple markets with market type and volume filtering. It provides residuals measurement and Durbin-Watson calculation for each market in ordeer to account for autocorrelation of residuals.
+This file shares the same structure as ```HARbacktest.py```. It tests multiple markets with market type and volume filtering. It provides residuals measurement and Durbin-Watson calculation for each market in order to account for autocorrelation of residuals.
 
 ![HAR-RV Backtests](assets/HAR_residuals.png)
 
@@ -125,11 +126,11 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 #### 1. Key Findinds
 
 - Log-returns on Sports and Politics prediction markets exhibit **extremely high kurtosis**, with a sharp peak and fat tails distribution.
-- No noticeable skew or smile in volatility distribution across price ranges, except for the mechanical relative effect observed for extremely low and high prices.
+- No noticeable skew or smile is present in volatility distribution across price ranges, except for the mechanical relative effect for extremely low and high prices.
 - **Model performance** across 133 high-volume markets:
-    * GARCH BIC-comparison method obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets.
-    *  HAR-RV method obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points). Similar balance for up and down misses: respectively 50.7% and 49.3%.
-- For the GARCH BIC-comparison method, most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
+    * *GARCH BIC-comparison method* obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets.
+    *  *HAR-RV method* obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points). Similar balance for up and down misses: respectively 50.7% and 49.3%.
+- For the *GARCH BIC-comparison method*, the most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
 
 
 #### 2. Limitations
