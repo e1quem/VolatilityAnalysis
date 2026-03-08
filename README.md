@@ -5,6 +5,7 @@ This project uses traditional financial volatility models (GARCH, REGARCH, HAR-R
 * [How to Run](#how-to-run)
 * [Global Analysis of Markets](#global-analysis-of-markets)
 * [GARCH Models](#garch-models)
+* [Ornstein-Uhlenbeck Process](#ornstein-uhlenbeck-process)
 * [HAR-RV Model](#har-rv-model)
 * [Key Findings, Limitations, Further Experimentations and Literature](#key-findings-limitations-further-experimentations-and-literature)
 
@@ -88,8 +89,31 @@ After running this version of our models on price data, we observe that this new
 
 #### 4. Upcoming
 
-- Ornstein-Uhlenbeck process
 - REGARCH
+
+## Ornstein-Uhlenbeck Process
+
+While GARCH models focus on conditional variance, we use the Ornstein-Uhlenbeck Process (OU) to treat the realized volatility as a mean-reverting process, for which the mean-reverting force increases the further volatility moves away from its average. This is based on the assumption that volatility tends to cluster and then decay to a long-term average after an information shock.
+
+#### 1. [ornsteinUhlenbeck.py](./ornsteinUhlenbeck.py)
+
+This model assumes that volatility follows a stochastic differential equation:
+$$d\sigma_t = \kappa (\mu - \sigma_t) dt + \sigma_{ou} dW_t$$
+
+In this model, $\kappa$ represents the mean reversion speed (how fast volatility returns to its average). $\mu$ is the long-term mean volatility equilibrium of the market. $\sigma_ou$ is the volatility of the volatility: is inherent noise of the volatility process itself.
+
+We estimate these parameters by fitting an AR(1) process on rolling realized volatility. The rolling window was arbitrarly chosen.
+
+```
+Will_Phan_Văn_Giang_be_the_next_President_of_Vietnam?_0.4.csv...
+Accuracy: 94.46%
+Hits:           3120 (94.46%)
+Miss up:        108 (3.27%)
+Miss down:      75 (2.27%)
+Mean Reversion: 0.0426
+Long-term Vol:  0.0709
+Vol of Vol:     0.0095
+```
 
 
 ## HAR-RV Model
@@ -128,10 +152,10 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 
 - Log-returns on Sports and Politics prediction markets exhibit **extremely high kurtosis**, with a sharp peak and fat tails distribution.
 - No noticeable skew or smile is present in volatility distribution across price ranges, except for the mechanical relative effect for extremely low and high prices.
-- **Model performance** across 133 high-volume markets:
-    * *GARCH BIC-comparison method* obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets.
-    *  *HAR-RV method* obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points). Similar balance for up and down misses: respectively 50.7% and 49.3%.
-- For the *GARCH BIC-comparison method*, the most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
+- **Model performance** across high-volume markets:
+    * *GARCH BIC-comparison method* obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points across 122 markets). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets out of 133. The most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
+    *  *HAR-RV method* obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points for 133 markets). Similar balance for up and down misses: respectively 50.7% and 49.3%.
+    * *Ornstein-Uhlenbeck process* obtained a 93.23% accuracy over 115 markets.
 
 
 #### 2. Limitations
