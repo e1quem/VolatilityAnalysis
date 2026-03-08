@@ -39,9 +39,10 @@ Before applying volatility models to our dataset, we need to understand its char
 Log-returns on high-volume prediction markets are highly leptokurtic: they have a highly positive Kurtosis. Thus, using a normal distribution for our GARCH analysis wouldn't be accurate. From now on, we'll use the *Generalized Error Distribution* (GED) of the garch library to fit our models, for adaptative sharp peak and larger tails.
 
 #### 3. [skewSmile.py](./skewSmile.py)
-The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its eventual smile or skew, we can plot realized volatility according to price using a simple ARCH(1) model. We'll use more complex models later on.
-![Skew](assets/VolatilitySkew.png)
-This graph does not necessarily indicate volatility skewness, but rather a logical mechanism. It reveals how low prices have higher relative changes, and high prices have lower relative changes, with a plateau from 30c to 70c.
+The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its eventual smile or skew, we can plot realized volatility according to price using a simple ARCH(1) model on log returns. We'll use more complex models later on.
+![Skew](assets/VolatilitySkew_log.png)
+This graph does not necessarily indicate volatility skewness, but rather a logical mechanism of log returns. It reveals how a 1c to 2c price change will be accounted as a larger relative price movement than a 90c to 91 price change, with a plateau from 30c to 70c. This mechanism can be countered by using log-odds returns (by converting price changes into relative probabilities, smoothing out extreme moves and making price changes more uniform). With this fix, volatility is equally as high for extremely high and low prices, with lower volatility from 10c to 70c.
+![Skew](assets/VolatilitySkew_logOdds.png)
 
 #### 4. [getData.py](./getData.py)
 Downloads .csv price history of eligible markets in data/Politics and data/Sports folders.
