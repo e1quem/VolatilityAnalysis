@@ -147,7 +147,7 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 #### 4. Literature
 **Paul Wilmott** (2006). *Paul Wilmott on Quantitative Finance*, 2nd Edition. Wiley.
 
-**Fulvio Corsi** (2009). [A Simple Approximate Long-Memory Model of Realized Volatility](https://statmath.wu.ac.at/~hauser/LVs/FinEtricsQF/References/Corsi2009JFinEtrics_LMmodelRealizedVola.pdf)
+**Fulvio Corsi** (2009). [A Simple Approximate Long-Memory Model of Realized Volatility](https://statmath.wu.ac.at/~hauser/LVs/FinEtricsQF/References/Corsi2009JFinEtrics_LMmodelRealizedVola.pdf).
 
 
 
