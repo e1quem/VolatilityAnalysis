@@ -1,5 +1,5 @@
 # VolatilityAnalysis
-This project uses traditional financial volatility models (GARCH, REGARCH, HAR-RV, Rogers-Satchell, Ornstein-Uhlenbeck process) to measure realized volatility and forecast price intervals in a sandbox environment: Polymarket's Politics and Sports markets.
+This project uses traditional financial volatility models (GARCH, HAR-RV, Rogers-Satchell, Ornstein-Uhlenbeck process) to measure realized volatility and forecast price intervals in a sandbox environment: Polymarket's Politics and Sports markets.
 
 ## Table of contents
 * [How to Run](#how-to-run)
@@ -196,7 +196,7 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 #### 3. Further Experimentation
 
 - Linking this project with news-driven analytics: using breaking news to explain sudden volatility peaks on prediction markets.
-- Implementing up and down misses as trading signals for a theoretical trading project.
+- Implementing up and down misses as trading signals for a theoretical trading project. Detecting these abdnormal price movements could spot sudden arrival of new information, which could in turn lead to price overreaction amplified by volatility traders and followed by mean-reversing periods.
 - Collecting data ourselves in order to use more signals for advanced models.
 
 #### 4. Literature
