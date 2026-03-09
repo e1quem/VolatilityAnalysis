@@ -41,16 +41,16 @@ The statistical distribution of log-returns already gives an approximation of th
 ![Skew](assets/VolatilitySkew_log.png)
 This graph does not necessarily indicate volatility skewness, but rather a logical mechanism of log returns. It reveals how a 1c to 2c price change will be accounted as a larger relative price movement than a 90c to 91 price change, with a plateau from 30c to 70c. This mechanism can be countered by using log-odds returns (by converting price changes into relative probabilities, we smooth out extreme moves and make price changes more uniform).
 ![Skew](assets/VolatilitySkew_logOdds.png)
-With this fix, volatility is equally as high for extremely high and low prices, with lower volatility from 10c to 70c. There is an positively-skewed volatility smile.
+With this fix, volatility is equally as high for extremely high and low prices, with lower volatility from 10c to 70c. There is a positively-skewed volatility smile.
 
 #### 4. [getData.py](./getData.py)
-Used to downloads .csv price history of eligible markets in data/Politics and data/Sports folders. The maximum granularity is 10m intervals for 30 days of historical data.
+Used to downloads .csv price history of eligible markets in data/Politics and data/Sports. The maximum granularity is 10m intervals for 30 days of historical data.
 
 
 ## GARCH Models
 
 #### 1. [GARCHbacktest.py](GARCH/GARCHbacktest.py)
-This file uses GARCH models to backtest volatility forecasts on individual markets (requires an individual market slug to run). The model is fitted on an initial amount of training points. The volatility forecast it outputs is then used to define a 95% confidence price interval forecast for the next aggregated time period. Then, 10m observed prices are used to measure hits (price is inside the interval) and misses (price is outside of interval).
+This file uses GARCH models to backtest volatility forecasts on individual markets (requires an individual market slug to run). The model is fitted on an initial amount of training points. The volatility forecast it outputs is then used to define a 95% confidence price interval forecast for the next aggregated time period. Then, 10m observed prices are used to measure hits and misses (price is inside/outside the interval).
 
 Instead of fitting only one model at each step, we take a more adaptative approach. For each aggregated period, we fit 6 differents models: ARCH(1), ARCH(2), GARCH(1,1), GARCH(2,1), TARCH(1,1,1), TARCH(2,2,1). We then compare their BICs and use the model with the lowest one for the forecast.
 
@@ -183,9 +183,9 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 - Log-returns on Sports and Politics prediction markets exhibit **extremely high kurtosis**, with a sharp peak and fat tails distribution.
 - A positively-skewed smile is present in log-odds volatility distribution across price ranges.
 - **Model performance** across high-volume markets:
-    * *GARCH BIC-comparison method* obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points across 122 markets). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets out of 133. The most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
-    *  *HAR-RV method* obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points for 133 markets). Similar balance for up and down misses: respectively 50.7% and 49.3%.
-    * *Ornstein-Uhlenbeck process* obtained a 93.23% accuracy over 115 markets.
+    * *GARCH BIC-comparison method* obtained a **93.8% accuracy** (23,332 misses out of 389,435 data points across 122 markets). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets out of 133. The most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
+    *  *HAR-RV method* obtained a **95.81% accuracy** (20,297 misses out of 50,5162 data points for 133 markets). Similar balance for up and down misses: respectively 50.7% and 49.3%.
+    * *Ornstein-Uhlenbeck process* obtained a **93.23% accuracy** over 115 markets.
 
 
 #### 2. Limitations
@@ -196,7 +196,7 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 #### 3. Further Experimentation
 
 - Linking this project with news-driven analytics: using breaking news to explain sudden volatility peaks on prediction markets.
-- Implementing up and down misses as trading signals for a theoretical trading project to backtest on various market types.
+- Implementing up and down misses as trading signals for a theoretical trading project.
 - Collecting data ourselves in order to use more signals for advanced models.
 
 #### 4. Literature
