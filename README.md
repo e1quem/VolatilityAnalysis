@@ -183,9 +183,9 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 - Log-returns on Sports and Politics prediction markets exhibit **extremely high kurtosis**, with a sharp peak and fat tails distribution.
 - A positively-skewed smile is present in log-odds volatility distribution across price ranges.
 - **Model performance** across high-volume markets:
-    * *GARCH BIC-comparison method* obtained a **93.8% accuracy** (23,332 misses out of 389,435 data points across 122 markets). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets out of 133. The most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
-    *  *HAR-RV method* obtained a **95.81% accuracy** (20,297 misses out of 50,5162 data points for 133 markets). Similar balance for up and down misses: respectively 50.7% and 49.3%.
-    * *Ornstein-Uhlenbeck process* obtained a **93.23% accuracy** over 115 markets.
+    * *GARCH BIC-comparison method* obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points across 122 markets). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets out of 133. The most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
+    *  *HAR-RV method* obtained a **95.81% averageaccuracy** (20,297 misses out of 50,5162 data points for 133 markets). Similar balance for up and down misses: respectively 50.7% and 49.3%.
+    * *Ornstein-Uhlenbeck process* obtained a **93.23% average accuracy** over 115 markets.
 
 
 #### 2. Limitations
