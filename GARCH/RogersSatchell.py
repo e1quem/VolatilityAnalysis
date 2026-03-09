@@ -1,12 +1,12 @@
-import matplotlib.pyplot as plt
+import globalAnalysis.utils as utils
 import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 from arch import arch_model
 import pandas as pd
 import numpy as np
 import warnings 
 import requests
 import socket
-import utils
 import json
 
 warnings.filterwarnings("ignore")

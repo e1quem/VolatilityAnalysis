@@ -1,5 +1,6 @@
 # Uses GARCH volatility models to plot observed volatility according to price in order to check for skew or smile
 
+import globalAnalysis.utils as utils
 import matplotlib.pyplot as plt
 from scipy.stats import skew
 from arch import arch_model
@@ -7,7 +8,6 @@ import pandas as pd
 import numpy as np
 import warnings 
 import requests
-import utils
 import socket
 import json
 import sys

@@ -1,5 +1,6 @@
 # Plots distribution of 10m or periodically sampled log returns of markets.
 
+import globalAnalysis.utils as utils
 import matplotlib.pyplot as plt
 from scipy import stats
 import pandas as pd
@@ -7,7 +8,6 @@ import numpy as np
 import warnings
 import requests
 import socket
-import utils
 import json
 import sys
 

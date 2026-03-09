@@ -2,12 +2,12 @@
 # Filters markets depending on tag and historical price change
 
 from datetime import datetime, timezone
+import globalAnalysis.utils as utils
 from pathlib import Path
 import pandas as pd
 import warnings 
 import requests
 import socket
-import utils
 import json
 
 warnings.filterwarnings("ignore")

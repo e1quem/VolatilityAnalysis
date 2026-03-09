@@ -1,3 +1,4 @@
+import globalAnalysis.utils as utils
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
@@ -6,7 +7,6 @@ import numpy as np
 import warnings 
 import requests
 import socket
-import utils
 import json
 
 warnings.filterwarnings("ignore")

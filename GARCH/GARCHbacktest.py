@@ -3,6 +3,7 @@
 # Defines hits and misses by comparing aggregated price to 10m price
 # Graphic visualisation
 
+import globalAnalysis.utils as utils
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 from arch import arch_model
@@ -11,7 +12,6 @@ import numpy as np
 import warnings 
 import requests
 import socket
-import utils
 import json
 
 warnings.filterwarnings("ignore")
