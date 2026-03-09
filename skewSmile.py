@@ -48,11 +48,20 @@ for idx, m_info in enumerate(markets):
 
         df = dfHist['p'].resample(aggregate).last().ffill().to_frame()
 
-        # Calculating returns
-        df['logReturn'] = np.log(df['p'] / df['p'].shift(1))
+        ## 1. Normal log-returns version.
+        ## Calculating returns
+        #df['logReturn'] = np.log(df['p'] / df['p'].shift(1))
+
+        # 2. Log-Odds version
+        # We clip prices to avoid division by 0 or log(0), then calculate log-odds.
+        df['p_clipped'] = df['p'].clip(lower=0.1, upper=99.9)
+        df['log_odds'] = np.log(df['p_clipped'] / (100 - df['p_clipped']))
+        df['logReturn'] = df['log_odds'].diff()
+        
+        # Auto-scaling returns for model stability
         std = df['logReturn'].std()
-        scale = 1 / std
-        ScaledReturns = df['logReturn'].dropna() * scale # Autoscaling for arch stability
+        scale = 1 / std if std > 0 else 1
+        ScaledReturns = df['logReturn'].dropna() * scale
 
         trainingPoints = 40 
         if len(ScaledReturns) <= trainingPoints + 5:
@@ -99,9 +108,11 @@ if allData:
 
     plt.plot(x_range, p(x_range), 'r', linewidth=2, label=f'Skew={price_skew:.2f})')
 
-    plt.title(f'Volatility Skew: {len(markets)} {typeName} Markets ({volume}M+ Volume)')
+    #plt.title(f'Volatility Skew (Log): {len(markets)} {typeName} Markets ({volume}M+ Volume)') # Log returns
+    plt.title(f'Volatility Skew (Log-Odds): {len(markets)} {typeName} Markets ({volume}M+ Volume)') # Log-Odds returns
     plt.xlabel('Price (c)')
-    plt.ylabel('Volatility (%)')
+    #plt.ylabel('Volatility (%)') # Log returns
+    plt.ylabel('Volatility (Log-Odds Scale)') # Log-Odds returns
     plt.legend()
     plt.grid(alpha=0.3)
     plt.xlim(0, 100)

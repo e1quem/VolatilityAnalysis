@@ -49,9 +49,6 @@ for idx, m_info in enumerate(markets):
 
         # Calculating log returns
         df['logReturn'] = np.log(df['p'] / df['p'].shift(1))
-        std_dev = df['logReturn'].std()
-        scale = 1 / std_dev
-        ScaledReturns = df['logReturn'].dropna() * scale # Autoscaling for arch stability
 
         # Backtesting
         # Defining the amount of points needed to fit the model
@@ -62,19 +59,25 @@ for idx, m_info in enumerate(markets):
             'TARCH(1,1,1)': (1,1,1) # Removed GARCH(2,2), ARCH(2) and TARCH(2,2,1): they rarely had the lowest BIC on these markets.
         }
            
-        if len(ScaledReturns) <= trainingPoints+10:
+        if len(df['logReturn']) <= trainingPoints+10:
             continue
 
         start_index = trainingPoints
         resultsBT = []
         hits = 0
-        totalTests = len(ScaledReturns)- start_index - 1
+        totalTests = len(df['logReturn'])- start_index - 1
 
         print(f"\033[1m[{idx + 1}/{len(markets)}]\033[0m \033[3m{market_name} \033[0m")
         
 
-        for i in range(start_index, len(ScaledReturns) - 1):
-            train_data = ScaledReturns.iloc[:i]
+        for i in range(start_index, len(df['logReturn']) - 1):
+            
+            scaling = df['logReturn'][:i]
+            # Autoscaling in the loop for ARCH stability
+            scale = 1 / scaling.std()
+            ScaledReturns = scaling.dropna() * scale
+            train_data = ScaledReturns
+
             # For each step, selection of the best model using the BIC method
             best_bic = float('inf')
             best_params = (1, 0, 1) 
@@ -163,7 +166,7 @@ for idx, m_info in enumerate(markets):
                 'Accuracy': round(accuracy_10m, 2),
                 'Top Model': model_usage
             })
-            print(f"   Accuracy: {accuracy_10m:.2f}%")
+            print(f"    Accuracy: {accuracy_10m:.2f}%")
         else:
             print(f"Not enough data points to train the model.")
 

@@ -118,15 +118,22 @@ print(f"95% interval: from {lo:.2f}c to {hi:.2f}c")
 # Defining the amount of points needed to fit the model
 trainingPoints = 40 
 
-if len(ScaledReturns) <= trainingPoints+10:
+
+if len(df['logReturn']) <= trainingPoints+10:
     print("Not enough data for significant backtesting.")
 else:
     resultsBT = []
 
-    print(f"\nBacktesting {len(ScaledReturns) - trainingPoints} data points...")
+    print(f"\nBacktesting {len(df['logReturn']) - trainingPoints} data points...")
 
-    for i in range(trainingPoints, len(ScaledReturns) - 1):
-        train_data = ScaledReturns.iloc[:i]
+    for i in range(trainingPoints, len(df['logReturn']) - 1):
+        
+        # We re-scale returns to avoid look-ahead bias 
+        scale = 1 / df['logReturn'].iloc[:i].std()
+        ScaledReturns = df['logReturn'].dropna() * scale
+
+        train_data = ScaledReturns
+
         # For each step, selection of the best model using the BIC method
         best_bic = float('inf')
         best_params = (1, 0, 1) 
