@@ -1,4 +1,5 @@
 from statsmodels.stats.stattools import durbin_watson
+from statsmodels.stats.diagnostic import acorr_ljungbox
 import globalAnalysis.utils as utils
 import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
@@ -68,6 +69,7 @@ for idx, m_info in enumerate(markets):
         print(f"\033[1m[{idx + 1}/{len(markets)}]\033[0m \033[3m{market_name[:50]}...\033[0m")
 
         # Backtest loop
+        oos_errors = []
         for i in range(start_index, len(harDF) - h):
             train_data = harDF.iloc[:i]
             
@@ -79,11 +81,16 @@ for idx, m_info in enumerate(markets):
             
             current_features = [1, train_data['RVD'].iloc[-1], train_data['RVW'].iloc[-1], train_data['RVM'].iloc[-1]]
             pred = max(0, model.predict(current_features)[0])
-            RV = y_train.iloc[-1]
+            y_true = harDF['returns2'].iloc[i + h]
+            oos_error = y_true - pred
+            oos_errors.append(oos_error)
+            dw_oos = durbin_watson(np.array(oos_errors)) if len(oos_errors) >= 2 else np.nan
 
-            # Residual
-            residuals = pred - RV
-            dw = durbin_watson(model.resid)
+            lb_pvalue = np.nan
+            if len(oos_errors) >= 12:
+                max_lag = min(10, len(oos_errors) - 1)
+                lb_df = acorr_ljungbox(oos_errors, lags=[max_lag], return_df=True)
+                lb_pvalue = lb_df['lb_pvalue'].iloc[0]
             
             sigma = np.sqrt(pred)
             p_now = df['p'].loc[harDF.index[i]]
@@ -102,8 +109,9 @@ for idx, m_info in enumerate(markets):
                 'price': p_fut,
                 'lo': lo, 'hi': hi, 'hit': hit,
                 'miss_type': miss_type,
-                'residuals': residuals,
-                'dw': dw
+                'oos_error': oos_error,
+                'dw_oos': dw_oos,
+                'lb_pvalue': lb_pvalue
             })
 
         if resultsBT:
@@ -117,6 +125,8 @@ for idx, m_info in enumerate(markets):
                 'Points': len(res_df),
                 'Miss up': len(res_df[res_df['miss_type'] == 'up']),
                 'Miss down': len(res_df[res_df['miss_type'] == 'down']),
+                'DW OOS': round(res_df['dw_oos'].dropna().iloc[-1], 3) if res_df['dw_oos'].notna().any() else np.nan,
+                'LB p-value': round(res_df['lb_pvalue'].dropna().iloc[-1], 4) if res_df['lb_pvalue'].notna().any() else np.nan,
             })
             print(f"      Accuracy: {acc:.2f}%")
 
@@ -173,17 +183,17 @@ for page in range(pages):
         ax_left.set_title(f"Acc: {acc:.1f}%", fontsize=8, pad=5)
         ax_left.legend(prop={'size': 6}, loc='upper left')
 
-        # Right: residuals and Durbin-Watson
-        ax_right.plot(bt_df.index, bt_df['residuals'], color='black', lw=0.5, zorder=3)
+        # Right: OOS forecast errors and autocorrelation diagnostics
+        ax_right.plot(bt_df.index, bt_df['oos_error'], color='black', lw=0.5, zorder=3)
         ax_right.axhline(0, color='red', linestyle='-', lw=0.8)
         
         ax_dw = ax_right.twinx()
-        ax_dw.plot(bt_df.index, bt_df['dw'], color='royalblue', lw=0.5, alpha=0.6, zorder = 3)
+        ax_dw.plot(bt_df.index, bt_df['dw_oos'], color='royalblue', lw=0.5, alpha=0.6, zorder = 3)
         ax_dw.fill_between(bt_df.index, 1.5, 2.5, color='royalblue', alpha=0.1)
         ax_dw.set_ylim(0, 4)
         ax_dw.tick_params(axis='y', labelsize=7, color='royalblue')
         
-        ax_right.set_title(f"Residuals & Durbin-Watson", fontsize=8, pad=5)
+        ax_right.set_title(f"OOS errors & DW (LB in report)", fontsize=8, pad=5)
 
         # Appearance
         for ax in [ax_left, ax_right]:

@@ -13,6 +13,14 @@ warnings.filterwarnings("ignore")
 
 utils.ipv4()
 
+def empirical_return_bounds(fit_result, sigma_forecast, alpha=0.05):
+    std_resid = pd.Series(fit_result.std_resid).replace([np.inf, -np.inf], np.nan).dropna()
+    if len(std_resid) >= 30:
+        q_low, q_high = np.quantile(std_resid, [alpha / 2, 1 - alpha / 2])
+    else:
+        q_low, q_high = -1.96, 1.96
+    return q_low * sigma_forecast, q_high * sigma_forecast
+
 # Obtaining market info
 marketName = input("\033[1mMarket slug\033[0m (end of the Polymarket URL): ")
 
@@ -148,9 +156,10 @@ else:
                 sigma_raw = np.sqrt(f_bt.variance.iloc[-1, 0]) / scale
                 current_price = df_resampled['close'].iloc[i]
                 next_price = df_resampled['close'].iloc[i+1]
-                
-                lo = max(0, current_price * np.exp(-1.96 * sigma_raw))
-                hi = min(100, current_price * np.exp(1.96 * sigma_raw))
+                ret_lo, ret_hi = empirical_return_bounds(fit_bt, sigma_raw)
+
+                lo = max(0, current_price * np.exp(ret_lo))
+                hi = min(100, current_price * np.exp(ret_hi))
                 
                 hit = lo <= next_price <= hi
                 miss_type = None

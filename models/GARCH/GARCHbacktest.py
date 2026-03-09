@@ -18,6 +18,14 @@ warnings.filterwarnings("ignore")
 
 utils.ipv4()
 
+def empirical_return_bounds(fit_result, sigma_forecast, alpha=0.05):
+    std_resid = pd.Series(fit_result.std_resid).replace([np.inf, -np.inf], np.nan).dropna()
+    if len(std_resid) >= 30:
+        q_low, q_high = np.quantile(std_resid, [alpha / 2, 1 - alpha / 2])
+    else:
+        q_low, q_high = -1.96, 1.96
+    return q_low * sigma_forecast, q_high * sigma_forecast
+
 # Obtaining market info
 marketName = input("\033[1mMarket slug\033[0m (end of the Polymarket URL): ")
 
@@ -103,12 +111,13 @@ forecast = fit.forecast(horizon=1)
 forecastVolScaled = np.sqrt(forecast.variance.iloc[-1, 0])
 forecastVol = (forecastVolScaled / scale) * np.sqrt(365)
 
-# Simple 95% confidence price forecast
-per95 = (forecastVolScaled / scale)  * 1.96 
+# Simple 95% confidence price forecast (empirical standardized residual quantiles)
+sigma_next = forecastVolScaled / scale
+ret_lo, ret_hi = empirical_return_bounds(fit, sigma_next)
 price = dfFull['p'].iloc[-1]
 
-lo = max(0, price * (1 - per95))
-hi = min(100, price * (1 + per95))
+lo = max(0, price * np.exp(ret_lo))
+hi = min(100, price * np.exp(ret_hi))
 
 print(f"\nVolatility : {forecastVol:.2f}%")
 print(f"95% interval: from {lo:.2f}c to {hi:.2f}c")
@@ -130,7 +139,7 @@ else:
         
         # We re-scale returns to avoid look-ahead bias 
         scale = 1 / df['logReturn'].iloc[:i].std()
-        ScaledReturns = df['logReturn'].dropna() * scale
+        ScaledReturns = df['logReturn'].iloc[:i].dropna() * scale
 
         train_data = ScaledReturns
 
@@ -165,9 +174,10 @@ else:
             time_idx = df.index[i+1]
 
             sigma = np.sqrt(fit_bt.forecast(horizon=1).variance.iloc[-1, 0]) / scale
+            ret_lo, ret_hi = empirical_return_bounds(fit_bt, sigma)
 
-            lo = max(0, current_price * np.exp(-1.96 * sigma))
-            hi = min (100, current_price * np.exp(1.96 * sigma))
+            lo = max(0, current_price * np.exp(ret_lo))
+            hi = min (100, current_price * np.exp(ret_hi))
 
             hit = lo <= next_price <= hi
             miss_type = None

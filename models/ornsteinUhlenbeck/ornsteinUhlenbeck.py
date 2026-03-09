@@ -10,7 +10,7 @@ import os
 warnings.filterwarnings("ignore")
 
 # Config
-base_path = os.path.expanduser('~/Desktop/volAnalysis/data/')
+base_path = os.path.expanduser('~/Desktop/VolatilityAnalysis/data/')
 
 # Uses getData.py downloaded price history for stable comparison
 # Populating the /data folder is required before launching this file

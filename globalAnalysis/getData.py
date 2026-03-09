@@ -22,8 +22,8 @@ print(f"Found \033[1m{len(Politics)}\033[0m Politics markets and \033[1m{len(Spo
 
 # Saving Politics and Sports markets as csv files in respective folders in the data folder
 # Defining and creating output folders
-(Path.home() / "Desktop/volAnalysis/data/Politics").mkdir(parents=True, exist_ok=True)
-(Path.home() / "Desktop/volAnalysis/data/Sports").mkdir(parents=True, exist_ok=True)
+(Path.home() / "Desktop/VolatilityAnalysis/data/Politics").mkdir(parents=True, exist_ok=True)
+(Path.home() / "Desktop/VolatilityAnalysis/data/Sports").mkdir(parents=True, exist_ok=True)
 
 for market in Politics:
     token = market['token']
@@ -35,7 +35,7 @@ for market in Politics:
         dfHist['t'] = pd.to_datetime(dfHist['t'], unit='s')
         dfHist['p'] = (dfHist['p'] * 100).round(1)
         dfHist.set_index('t', inplace=True)
-        outputFile = Path.home() / f"Desktop/volAnalysis/data/Politics/{name}_{spread}.csv"
+        outputFile = Path.home() / f"Desktop/VolatilityAnalysis/data/Politics/{name}_{spread}.csv"
         dfHist.to_csv(outputFile)
         print(f"Saved Politics market: {outputFile}")
     except Exception as e:
@@ -51,7 +51,7 @@ for market in Sports:
         dfHist['t'] = pd.to_datetime(dfHist['t'], unit='s')
         dfHist['p'] = (dfHist['p'] * 100).round(1)
         dfHist.set_index('t', inplace=True)
-        outputFile = outputFile = Path.home() / f"Desktop/volAnalysis/data/Sports/{name}_{spread}.csv"
+        outputFile = outputFile = Path.home() / f"Desktop/VolatilityAnalysis/data/Sports/{name}_{spread}.csv"
         dfHist.to_csv(outputFile)
         print(f"Saved Sports market: {outputFile}")
     except Exception as e:
