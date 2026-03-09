@@ -56,6 +56,8 @@ df_resampled = dfFull['p'].resample(aggregate).ohlc().ffill()
 
 # Calculating returns and auto-scaling them
 df_resampled['logReturn'] = np.log(df_resampled['close'] / df_resampled['close'].shift(1))
+
+# Look ahead bias : scaling on all available data. This should be moved inside the backtesting loop.
 std_dev = df_resampled['logReturn'].std()
 scale = 1 / std_dev
 ScaledReturns = df_resampled['logReturn'].dropna() * scale
