@@ -33,14 +33,14 @@ With these filters, between 100 and 150 markets remain eligible. Before applying
 #### 2. [returnsDistribution.py](./returnsDistribution.py)
 
 Log-returns on high-volume prediction markets are highly leptokurtic: they have a highly positive Kurtosis. 
-![GARCHOutput](data/assets/StatisticalDistribution.png)
+![GARCHOutput](assets/StatisticalDistribution.png)
 Thus, using a normal distribution for our GARCH analysis wouldn't be accurate. From now on, we'll use the *Generalized Error Distribution* (GED) of the garch library to fit our models, for adaptative sharp peak and larger tails.
 
 #### 3. [skewSmile.py](./skewSmile.py)
 The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its eventual smile or skew, we can plot realized volatility according to price using a simple ARCH(1) model on log returns. We'll use more complex models later on.
-![Skew](data/assets/VolatilitySkew_log.png)
+![Skew](assets/VolatilitySkew_log.png)
 This graph does not necessarily indicate volatility skewness, but rather a logical mechanism of log returns. It reveals how a 1c to 2c price change will be accounted as a larger relative price movement than a 90c to 91 price change, with a plateau from 30c to 70c. This mechanism can be countered by using log-odds returns (by converting price changes into relative probabilities, we smooth out extreme moves and make price changes more uniform).
-![Skew](data/assets/VolatilitySkew_logOdds.png)
+![Skew](assets/VolatilitySkew_logOdds.png)
 With this fix, volatility is equally as high for extremely high and low prices, with lower volatility from 10c to 70c. There is an positively-skewed volatility smile.
 
 #### 4. [getData.py](./getData.py)
@@ -56,7 +56,7 @@ Instead of fitting only one model at each step, we take a more adaptative approa
 
 *BIC stands for Bayesian Information Criterion. It is used to evaluate the fit of different models, rewarding both fit (how well the model explains the data) and simplicity. A lower BIC indicates a better model.*
 
-![GARCH](data/assets/GARCH.png)
+![GARCH](assets/GARCH.png)
 
 This program outputs model usage to observe which models are most often used on which markets.
 
@@ -87,15 +87,13 @@ Model used during backtest
  TARCH(1,1,1): 4 points (2.90%)
 ```
 
-![GARCH_output](data/assets/GARCHbacktest_output.png)
-
 
 
 #### 2. [GARCHbacktests.py](GARCH/GARCHbacktests.py)
 This file has the same basic principle as ```GARCHbacktest.py``` but iterates on multiple high-volume markets. 
 To reduce computing power, the list of models is reduced to ARCH(1), GARCH(1,1) and TARCH(1,1,1). These were the models regularly obtaining the lowest BICs on individual markets.
 
-![GARCHs](data/assets/GARCHs.png)
+![GARCHs](assets/GARCHs.png)
 
 #### 3. [RogersSatchell.py](GARCH/RogersSatchell.py)
 
@@ -168,7 +166,7 @@ By default, we chose the following ratios:
 - a reactive 6:18:36 ratio (1h:3h:6h) for markets with less than a day of price history
 - a longer 24:72:144 ratio (4h:12h:24h) for all other markets.
 
-![HAR-RV](data/assets/HAR-RV.png)
+![HAR-RV](assets/HAR-RV.png)
 
 With HAR-RV, the 95% confidence interval we obtain is tighter. Since it operates on more granular data (10m frequency compared to 4h frequency for most GARCH examples), this tight interval can maintain an accuracy close the 95% with more misses that are balanced with more frequent hits.
 
@@ -176,7 +174,7 @@ With HAR-RV, the 95% confidence interval we obtain is tighter. Since it operates
 
 This file shares the same structure as ```HARbacktest.py```. It tests multiple markets with market type and volume filtering. It provides residuals measurement and Durbin-Watson calculation for each market in order to account for autocorrelation of residuals.
 
-![HAR-RV Backtests](data/assets/HAR_residuals.png)
+![HAR-RV Backtests](assets/HAR_residuals.png)
 
 ## Key Findings, Limitations, Further Experimentations and Literature
 
