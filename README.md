@@ -105,7 +105,7 @@ In this sense, we use **Rogers & Satchell (1991)** formula as an exogenous varia
 
 $$\sigma^2_{rs}=\frac{1}{n}\hspace{0.5em}\sum^n_{i=1} \left( \log\hspace{0.3em}\left(\hspace{0.3em}\frac{H_i}{C_i}\hspace{0.3em}\right) \hspace{0.3em}\log\hspace{0.3em}\left(\hspace{0.3em}\frac{H_i}{O_i}\hspace{0.3em}\right) + \log\hspace{0.3em}\left(\hspace{0.3em}\frac{L_i}{C_i}\hspace{0.3em}\right) \hspace{0.3em}\log\hspace{0.3em}\left(\hspace{0.3em}\frac{L_i}{O_i}\hspace{0.3em}\right)\right)$$
 
-*With $O_i$ as opening price, $C_i$ as closing price, $H_i$ as highest price and $L_i$ as lowest price.*
+With $O_i$ as opening price, $C_i$ as closing price, $H_i$ as highest price and $L_i$ as lowest price.
 
 
 After running the RS version of our models, we observe that this new factor purely adds complexity and does not improve our models on these prediction markets. RS variations of basic models never obtain the lowest BIC compared to their simpler counterparts.
