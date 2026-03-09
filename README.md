@@ -17,7 +17,7 @@ In your venv, run ```pip install -r requirements.txt```.
 
 #### 2. Running the files
 
-To trunun files located in the root folder: ```python3 {name}.py run```.
+To run files located in the root folder: ```python3 {name}.py run```.
 *Example: ```python3 skewSmile.py run```*
 
 
