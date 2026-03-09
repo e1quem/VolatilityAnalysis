@@ -39,7 +39,7 @@ Thus, using a normal distribution for our GARCH analysis wouldn't be accurate. F
 #### 3. [skewSmile.py](./skewSmile.py)
 The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its eventual smile or skew, we can plot realized volatility according to price using a simple ARCH(1) model on log returns. We'll use more complex models later on.
 ![Skew](assets/VolatilitySkew_log.png)
-This graph does not necessarily indicate volatility skewness, but rather a logical mechanism of log returns. It reveals how a 1c to 2c price change will be accounted as a larger relative price movement than a 90c to 91 price change, with a plateau from 30c to 70c. This mechanism can be countered by using log-odds returns (by converting price changes into relative probabilities, we smooth out extreme moves and make price changes more uniform).
+This graph does not necessarily indicate volatility skewness, but rather a logical mechanism of log returns. It reveals how a 1c to 2c price change will be accounted as a larger relative price movement than a 90c to 91 price change, with a plateau from 30c to 70c. This mechanism can be countered using log-odds returns: by converting price changes into relative probabilities, we smooth out extreme moves and make price changes more uniform.
 ![Skew](assets/VolatilitySkew_logOdds.png)
 With this fix, volatility is equally as high for extremely high and low prices, with lower volatility from 10c to 70c. There is a positively-skewed volatility smile.
 
@@ -108,7 +108,7 @@ $$\sigma^2_{rs}=\frac{1}{n}\hspace{0.5em}\sum^n_{i=1} \left( \log\hspace{0.3em}\
 With $O_i$ as opening price, $C_i$ as closing price, $H_i$ as highest price and $L_i$ as lowest price.
 
 
-After running the RS version of our models, we observe that this new factor purely adds complexity and does not improve our models on these prediction markets. RS variations of basic models never obtain the lowest BIC compared to their simpler counterparts.
+After running the RS version of our models, we observe that this new factor purely adds complexity and does not improve our models on these markets. RS variants never obtain the lowest BIC compared to their simpler counterparts.
 
 ```
         4H forecast
@@ -130,9 +130,9 @@ While GARCH models focus on conditional variance, we use the Ornstein-Uhlenbeck 
 This model assumes that volatility follows a stochastic differential equation:
 $$d\sigma_t = \kappa (\mu - \sigma_t) dt + \sigma_{ou} dW_t$$
 
-In this model, $\kappa$ represents the mean reversion speed. $\mu$ is the long-term mean volatility equilibrium of the market. $\sigma_ou$ is the volatility of the volatility: is inherent noise of the volatility process itself.
+In this model, $\kappa$ represents the mean reversion speed. $\mu$ is the long-term mean volatility equilibrium of the market. $\sigma_ou$ is the volatility of the volatility: the inherent noise of the volatility process itself.
 
-We estimate these parameters by fitting an AR(1) process on rolling realized volatility. The rolling window was arbitrarly chosen. This OU model can be run on multiple markets, and obtains sufficiently high accuracy.
+We estimate these parameters by fitting an AR(1) process on rolling realized volatility. The 20 periods rolling window was arbitrarly chosen. This OU model can be run on multiple markets, and obtains relatively high accuracy.
 
 ```
 Will_Phan_Văn_Giang_be_the_next_President_of_Vietnam?_0.4.csv...
@@ -184,7 +184,7 @@ This file shares the same structure as ```HARbacktest.py```. It tests multiple m
 - A positively-skewed smile is present in log-odds volatility distribution across price ranges.
 - **Model performance** across high-volume markets:
     * *GARCH BIC-comparison method* obtained a **93.8% average accuracy** (23,332 misses out of 389,435 data points across 122 markets). **Up and down misses are even**: respectively 49.93% and 50.07%. The program couldn't fit the models for 11 markets out of 133. The most used model was **ARCH(1)**. This indicates that more complex models such as GARCH and TARCH are not necessarily better for the price behavior of prediction markets.
-    *  *HAR-RV method* obtained a **95.81% averageaccuracy** (20,297 misses out of 50,5162 data points for 133 markets). Similar balance for up and down misses: respectively 50.7% and 49.3%.
+    *  *HAR-RV method* obtained a **95.81% average accuracy** (20,297 misses out of 50,5162 data points for 133 markets). Similar balance for up and down misses: respectively 50.7% and 49.3%.
     * *Ornstein-Uhlenbeck process* obtained a **93.23% average accuracy** over 115 markets.
 
 
