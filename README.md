@@ -39,7 +39,7 @@ Thus, using a normal distribution for our GARCH analysis wouldn't be accurate. F
 #### 3. [skewSmile.py](globalAnalysis/skewSmile.py)
 The statistical distribution of log-returns already gives an approximation of the skewness of the data. In order to observe its distribution and its possible smile or skew, we can plot realized volatility according to price using a simple ARCH(1) model on log returns. We'll use more complex models later on.
 ![Skew](assets/VolatilitySkew_log.png)
-This graph does not necessarily indicate volatility skewness, but rather a logical mechanism of log returns. It reveals how a 1c to 2c price change will be accounted as a larger relative price movement than a 90c to 91c price change, with a plateau from 30c to 70c. This mechanism can be countered using log-odds returns: by converting price changes into relative probabilities, we smooth out extreme moves and make price changes more uniform.
+This graph does not necessarily indicate volatility skewness, but rather a logical mechanism of log returns. It reveals how a 1c to 2c price change will be accounted for as a larger relative price movement than a 90c to 91c price change, with a plateau from 30c to 70c. This mechanism can be countered using log-odds returns: by converting price changes into relative probabilities, we smooth out extreme moves and make price changes more uniform.
 ![Skew](assets/VolatilitySkew_logOdds.png)
 With this fix, volatility is equally high for extremely high and low prices, with lower volatility from 10c to 70c. There is a positively-skewed volatility smile.
 
@@ -168,7 +168,7 @@ By default, we chose the following ratios:
 
 ![HAR-RV](assets/HAR-RV.png)
 
-With HAR-RV, the 95% confidence interval we obtain is tighter. Since it operates on more granular data (10m frequency compared to 4h frequency for most GARCH examples), this tight interval can maintain an accuracy close to 95% with more misses that are balanced with more frequent hits.
+With HAR-RV, the 95% confidence interval we obtain is tighter. Since it operates on more granular data (10m frequency compared to 4h frequency for most GARCH examples), this tight interval can maintain an accuracy close to 95%: it produces more missed in absolute terms, but also far more hits, since observations are more frequent.
 
 #### 3. [HARbacktests.py](models/HAR-RV/HARbacktests.py)
 
